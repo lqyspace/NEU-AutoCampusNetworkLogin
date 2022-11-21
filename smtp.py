@@ -6,18 +6,15 @@ from email.utils import parseaddr, formataddr
 import argparse
 
 class smtpJob():
-    def __init__(self, ip):
+    def __init__(self, ip, sender, receivers, mail_host, mail_user, mail_pass):
         self.__ip = ip
-        self.sender = "17613928573@sina.cn"
-        self.receivers = 'lqy17613928573@163.com'
-        # self.receivers = 'xiaoyun6vip@gmail.com'
-        # self.receivers = '2101738@stu.neu.edu.cn'
-        # self.receivers = 'charles_xiaoyun@qq.com'
+        self.sender = sender
+        self.receivers = receivers
 
         # 第三方SMTP服务
-        self.mail_host = "smtp.sina.cn"
-        self.mail_user = "17613928573@sina.cn"
-        self.mail_pass = "075f6b98cdfcd25c"
+        self.mail_host = mail_host
+        self.mail_user = mail_user
+        self.mail_pass = mail_pass
 
         self.send_email()
 
@@ -55,8 +52,13 @@ if __name__ == '__main__':
     # argparse的用法
     parser = argparse.ArgumentParser(prog="login-NEU", description="get id_addr",
                                      usage="%(prog)s [options]")
-    parser.add_argument('--ip', help="input IP address of %(prog)s program.", required=True)
+    parser.add_argument('--ip', help="input IP address of %(prog)s program.", required=True, type=str)
+    parser.add_argument('--sender', help="input sender address of %(prog)s program.", required=True, type=str)
+    parser.add_argument('--receivers', help="input receivers address of %(prog)s program.", required=True, type=str)
+    parser.add_argument('--mail_host', help="input mail_host address of %(prog)s program.", required=True, type=str)
+    parser.add_argument('--mail_user', help="input mail_user address of %(prog)s program.", required=True, type=str)
+    parser.add_argument('--mail_pass', help="input mail_pass address of %(prog)s program.", required=True, type=str)
     args = parser.parse_args()
 
     # 发送邮件
-    smtpJob(args.ip)
+    smtpJob(args.ip, args.sender, args.receivers, args.mail_host, args.mail_user, args.mail_pass)
