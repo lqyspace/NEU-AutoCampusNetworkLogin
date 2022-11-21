@@ -11,7 +11,7 @@ class LoadUp:
         self.ipaddr = None
         option = webdriver.ChromeOptions()
         option.add_argument("headless")
-        self.driver = webdriver.Chrome(chrome_options=option)
+        self.driver = webdriver.Chrome(options=option)
 
     def closeBrowser(self):
         self.driver.close()
@@ -56,7 +56,7 @@ class LoadUp:
 
         driver.switch_to.window(driver.window_handles[-1])
         self.ipaddr = driver.find_element(By.XPATH, '//*[@id="ipv4"]').text
-        print("login successful!\nip为: {}".format(self.ipaddr))
+        print("login successful!\tip为: {}".format(self.ipaddr))
 
 
 if __name__ == '__main__':
