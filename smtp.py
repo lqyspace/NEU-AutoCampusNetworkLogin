@@ -6,13 +6,14 @@ from email.utils import parseaddr, formataddr
 import argparse
 
 class smtpJob():
-    def __init__(self, ip, sender, receivers, mail_host, mail_user, mail_pass):
+    def __init__(self, ip, sender, receivers, mail_host, mail_port, mail_user, mail_pass):
         self.__ip = ip
         self.sender = sender
         self.receivers = receivers
 
         # 第三方SMTP服务
         self.mail_host = mail_host
+        self.mail_port = mail_port
         self.mail_user = mail_user
         self.mail_pass = mail_pass
 
@@ -34,7 +35,7 @@ class smtpJob():
         message['Subject'] = Header(subject, 'utf-8').encode()
 
         try:
-            smtpObj = smtplib.SMTP(self.mail_host, 25)
+            smtpObj = smtplib.SMTP(self.mail_host, self.mail_port)
             smtpObj.set_debuglevel(1)
             smtpObj.login(self.mail_user, self.mail_pass)
             smtpObj.sendmail(self.sender, [self.receivers], message.as_string())
@@ -56,9 +57,10 @@ if __name__ == '__main__':
     parser.add_argument('--sender', help="input sender address of %(prog)s program.", required=True, type=str)
     parser.add_argument('--receivers', help="input receivers address of %(prog)s program.", required=True, type=str)
     parser.add_argument('--mail_host', help="input mail_host address of %(prog)s program.", required=True, type=str)
+    parser.add_argument('--mail_port', help="input mail_port of %(prog)s program.", required=True, type=int)
     parser.add_argument('--mail_user', help="input mail_user address of %(prog)s program.", required=True, type=str)
     parser.add_argument('--mail_pass', help="input mail_pass address of %(prog)s program.", required=True, type=str)
     args = parser.parse_args()
 
     # 发送邮件
-    smtpJob(args.ip, args.sender, args.receivers, args.mail_host, args.mail_user, args.mail_pass)
+    smtpJob(args.ip, args.sender, args.receivers, args.mail_host, args.mail_port, args.mail_user, args.mail_pass)
